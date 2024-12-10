@@ -3,21 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Session Selection</title>
+  <title>Session Creation</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
   <div class="container">
     <h1>Welcome to the Hour Tracker</h1>
-    <p>Select a session to begin tracking hours</p>
+    <p>Create or select a session to begin tracking your hours</p>
 
     <div>
-      <label for="sessionSelect">Select Session:</label>
-      <select id="sessionSelect">
-        <option value="">-- Select Session --</option>
-      </select>
-      <button id="selectSessionBtn">Select Session</button>
+      <label for="newSessionName">Enter Session Name:</label>
+      <input type="text" id="newSessionName" placeholder="New session name">
+      <button id="createSessionBtn">Create New Session</button>
+    </div>
+
+    <p>Or, if a session already exists, click below to start tracking:</p>
+
+    <div>
+      <button id="selectExistingSessionBtn">Start "2024 season" Session</button>
     </div>
   </div>
 
