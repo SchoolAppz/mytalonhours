@@ -2,69 +2,93 @@ let timerInterval;
 let totalSeconds = 0; // Total time in seconds
 let isRunning = false; // Indicates whether the stopwatch is running
 
-// Get the current session from localStorage (used across different pages)
-let currentSession = localStorage.getItem('currentSession');
-if (!currentSession) {
-  currentSession = 'default'; // Default session if no session is selected
-}
-
-// On page load, initialize the stopwatch time if available
-document.addEventListener('DOMContentLoaded', function() {
-  // Load previously saved time if available
-  if (localStorage.getItem(`${currentSession}-time`)) {
-    totalSeconds = parseInt(localStorage.getItem(`${currentSession}-time`), 10);
-    updateTimeDisplay();
+// On page load, initialize the session and handle session dropdown
+document.addEventListener('DOMContentLoaded', function () {
+  // Check if a session is currently selected in localStorage
+  let currentSession = localStorage.getItem('currentSession');
+  if (!currentSession) {
+    currentSession = 'default'; // Default session if no session is selected
   }
 
-  // If the session is set and valid, update buttons and session info
+  // Update the session dropdown with available sessions
+  updateSessionDropdown();
+
+  // If there's a valid session selected, load its time and update the UI
   if (currentSession !== 'default') {
     document.getElementById('sessionSelect').value = currentSession;
+    loadStopwatchTime(currentSession);
   }
 
-  // Handle the start/stop button
-  document.getElementById('startStopBtn').addEventListener('click', function() {
-    if (isRunning) {
-      stopStopwatch();
+  // Handle create new session button
+  document.getElementById('createSessionBtn').addEventListener('click', function () {
+    const sessionName = document.getElementById('newSessionName').value.trim();
+    if (sessionName) {
+      createNewSession(sessionName);
     } else {
-      startStopwatch();
+      alert('Please enter a valid session name.');
     }
   });
 
-  // Handle the log hours button
-  document.getElementById('logHoursBtn').addEventListener('click', logHours);
-
-  // Handle session change
-  document.getElementById('sessionSelect').addEventListener('change', function() {
-    currentSession = document.getElementById('sessionSelect').value;
-    localStorage.setItem('currentSession', currentSession);
-    totalSeconds = 0; // Reset stopwatch for the new session
-    updateTimeDisplay();
+  // Handle select session button
+  document.getElementById('selectSessionBtn').addEventListener('click', function () {
+    const sessionName = document.getElementById('sessionSelect').value;
+    if (sessionName) {
+      // Save the selected session to localStorage
+      localStorage.setItem('currentSession', sessionName);
+      window.location.href = 'stopwatch.html'; // Redirect to the stopwatch page
+    } else {
+      alert('Please select a session.');
+    }
   });
-
-  updateSessionDropdown();
 });
 
-// Start the stopwatch and update the display every second
-function startStopwatch() {
-  timerInterval = setInterval(function() {
-    totalSeconds++;
+// Update the session dropdown with available sessions
+function updateSessionDropdown() {
+  const sessionSelect = document.getElementById('sessionSelect');
+  sessionSelect.innerHTML = '<option value="">-- Select Session --</option>';
+
+  // Get saved sessions from localStorage or initialize them as an empty array
+  const savedSessions = JSON.parse(localStorage.getItem('sessions')) || [];
+
+  // Add each saved session to the dropdown
+  savedSessions.forEach(session => {
+    const option = document.createElement('option');
+    option.value = session;
+    option.textContent = session;
+    sessionSelect.appendChild(option);
+  });
+}
+
+// Create a new session and add it to the session list
+function createNewSession(sessionName) {
+  const savedSessions = JSON.parse(localStorage.getItem('sessions')) || [];
+
+  // Check if the session already exists
+  if (savedSessions.includes(sessionName)) {
+    alert('Session already exists!');
+    return;
+  }
+
+  // Add the new session to the list of saved sessions
+  savedSessions.push(sessionName);
+  localStorage.setItem('sessions', JSON.stringify(savedSessions));
+
+  // Set the new session as the current session
+  localStorage.setItem('currentSession', sessionName);
+
+  // Redirect to the stopwatch page for the new session
+  window.location.href = 'stopwatch.html';
+}
+
+// Load the stopwatch time for the selected session
+function loadStopwatchTime(sessionName) {
+  if (localStorage.getItem(`${sessionName}-time`)) {
+    totalSeconds = parseInt(localStorage.getItem(`${sessionName}-time`), 10);
     updateTimeDisplay();
-    localStorage.setItem(`${currentSession}-time`, totalSeconds);
-  }, 1000);
-
-  isRunning = true;
-  document.getElementById('startStopBtn').textContent = 'Stop';
-  document.getElementById('logHoursBtn').disabled = false;
+  }
 }
 
-// Stop the stopwatch and stop updating the time
-function stopStopwatch() {
-  clearInterval(timerInterval);
-  isRunning = false;
-  document.getElementById('startStopBtn').textContent = 'Start';
-}
-
-// Update the displayed time in HH:MM:SS format
+// Update the time display on the stopwatch page
 function updateTimeDisplay() {
   const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
   const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
@@ -72,7 +96,38 @@ function updateTimeDisplay() {
   document.getElementById('time').textContent = `${hours}:${minutes}:${seconds}`;
 }
 
-// Log hours to the current session
+// Stopwatch functions
+let isRunning = false;
+let timerInterval;
+let totalSeconds = 0;
+
+document.getElementById('startStopBtn').addEventListener('click', function () {
+  if (isRunning) {
+    stopStopwatch();
+  } else {
+    startStopwatch();
+  }
+});
+
+document.getElementById('logHoursBtn').addEventListener('click', logHours);
+
+function startStopwatch() {
+  timerInterval = setInterval(function () {
+    totalSeconds++;
+    updateTimeDisplay();
+    localStorage.setItem(`${currentSession}-time`, totalSeconds);
+  }, 1000);
+  isRunning = true;
+  document.getElementById('startStopBtn').textContent = 'Stop';
+  document.getElementById('logHoursBtn').disabled = false;
+}
+
+function stopStopwatch() {
+  clearInterval(timerInterval);
+  isRunning = false;
+  document.getElementById('startStopBtn').textContent = 'Start';
+}
+
 function logHours() {
   const category = document.querySelector('input[name="category"]:checked');
   if (!category) {
@@ -80,7 +135,6 @@ function logHours() {
     return;
   }
 
-  // Prepare log data
   const log = {
     startTime: new Date(),
     endTime: new Date(),
@@ -88,25 +142,19 @@ function logHours() {
     category: category.id === 'build' ? 'Build' : 'Business'
   };
 
-  // Get current logs from localStorage or initialize them
   let sessionLogs = JSON.parse(localStorage.getItem(`${currentSession}-logs`)) || [];
-
-  // Add the new log to the session logs
   sessionLogs.push(log);
-
-  // Save logs back to localStorage
   localStorage.setItem(`${currentSession}-logs`, JSON.stringify(sessionLogs));
 
-  // Update log table and reset the stopwatch
   updateLogTable(sessionLogs);
   updateTotals(sessionLogs);
+
   resetStopwatch();
 }
 
-// Update the log table with session logs
 function updateLogTable(logs) {
   const tbody = document.getElementById('logTable').querySelector('tbody');
-  tbody.innerHTML = ''; // Clear existing table data
+  tbody.innerHTML = '';
   logs.forEach(log => {
     const row = document.createElement('tr');
     const start = new Date(log.startTime).toLocaleString();
@@ -118,7 +166,6 @@ function updateLogTable(logs) {
   });
 }
 
-// Format duration from seconds to HH:MM:SS
 function formatDuration(seconds) {
   const hours = String(Math.floor(seconds / 3600)).padStart(2, '0');
   const minutes = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
@@ -126,7 +173,6 @@ function formatDuration(seconds) {
   return `${hours}:${minutes}:${remainingSeconds}`;
 }
 
-// Update total hours worked in both Build and Business categories
 function updateTotals(logs) {
   let totalBuild = 0;
   let totalBusiness = 0;
@@ -145,27 +191,12 @@ function updateTotals(logs) {
   document.getElementById('totalTotal').textContent = formatDuration(totalHours);
 }
 
-// Reset the stopwatch after logging hours
 function resetStopwatch() {
   totalSeconds = 0;
   updateTimeDisplay();
   localStorage.setItem(`${currentSession}-time`, totalSeconds);
   document.getElementById('startStopBtn').textContent = 'Start';
   document.getElementById('logHoursBtn').disabled = true;
-  document.querySelector('input[name="category"]:checked')?.checked = false; // Uncheck categories
-}
-
-// Update the session dropdown with available sessions
-function updateSessionDropdown() {
-  const sessionSelect = document.getElementById('sessionSelect');
-  sessionSelect.innerHTML = '<option value="">-- Select Session --</option>';
-  const savedSessions = JSON.parse(localStorage.getItem('sessions')) || [];
-
-  savedSessions.forEach(session => {
-    const option = document.createElement('option');
-    option.value = session;
-    option.textContent = session;
-    sessionSelect.appendChild(option);
-  });
+  document.querySelector('input[name="category"]:checked')?.checked = false;
 }
 
