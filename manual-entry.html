@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manual Entry</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="container">
+    <h1>Manual Entry</h1>
+
+    <form id="manualEntryForm">
+      <label for="hours">Hours:</label>
+      <input type="number" id="hours" name="hours" min="1" required placeholder="Enter hours worked" />
+
+      <label for="entryDate">Select Date:</label>
+      <select id="entryDate" name="entryDate">
+        <option value="current">Use Current Date</option>
+        <option value="custom">Enter Custom Date</option>
+      </select>
+
+      <input type="date" id="customDate" name="customDate" style="display: none;" />
+
+      <div class="checkbox-group">
+        <input type="radio" id="manualBuild" name="manualCategory"> Build
+        <input type="radio" id="manualBusiness" name="manualCategory"> Business
+      </div>
+
+      <button type="submit">Log Hours</button>
+    </form>
+
+    <a href="index.html" class="back-btn">Back to Session</a>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
