@@ -1,0 +1,225 @@
+/* General body styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #121212;
+    color: #e0e0e0;
+    margin: 0;
+    padding: 20px;
+  }
+  
+  h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    color: #fff;
+  }
+  
+  /* Tab Navigation */
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .tab {
+    background-color: #333;
+    color: #fff;
+    padding: 12px 20px;
+    margin: 0 10px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 1.1rem;
+    flex: 1;
+    text-align: center;
+  }
+  
+  .tab:hover {
+    background-color: #444;
+  }
+  
+  .tab.active {
+    background-color: #ff4081;
+  }
+  
+  @media (max-width: 768px) {
+    .tab {
+      font-size: 1rem;
+      margin: 5px;
+      flex: none;
+      width: 100%;
+    }
+  }
+  
+  /* Tab Content */
+  .tab-content {
+    display: none;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #1d1d1d;
+  }
+  
+  .tab.active .tab-content {
+    display: block;
+  }
+  
+  /* Stopwatch Section */
+  #stopwatch p {
+    font-size: 2.5rem;
+    text-align: center;
+    margin: 20px 0;
+    font-weight: bold;
+  }
+  
+  button {
+    background-color: #ff4081;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    padding: 10px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    margin-top: 10px;
+  }
+  
+  button:hover {
+    background-color: #e31e7b;
+  }
+  
+  @media (max-width: 768px) {
+    button {
+      font-size: 1.1rem;
+      padding: 15px;
+      width: 100%;
+    }
+  }
+  
+  /* Checkboxes */
+  .checkbox-group {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 10px;
+  }
+  
+  .checkbox-group input {
+    transform: scale(1.2);
+  }
+  
+  @media (max-width: 768px) {
+    .checkbox-group {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+  
+  /* Log Section */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #1d1d1d;
+    border-radius: 8px;
+  }
+  
+  table, th, td {
+    border: 1px solid #333;
+  }
+  
+  th, td {
+    padding: 12px;
+    text-align: center;
+  }
+  
+  th {
+    background-color: #333;
+    color: #fff;
+  }
+  
+  td {
+    color: #ccc;
+  }
+  
+  td, th {
+    border-bottom: 1px solid #444;
+  }
+  
+  @media (max-width: 768px) {
+    table {
+      font-size: 0.9rem;
+    }
+  
+    th, td {
+      padding: 10px;
+    }
+  }
+  
+  /* Total Hours Section */
+  #totalHours {
+    color: #ff4081;
+    font-weight: bold;
+    margin-top: 20px;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+  
+  /* Manual Entry Form */
+  #manualEntryForm input, #manualEntryForm select {
+    padding: 10px;
+    font-size: 1rem;
+    margin-top: 10px;
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid #333;
+    background-color: #222;
+    color: #fff;
+  }
+  
+  #manualEntryForm button {
+    margin-top: 10px;
+    width: 100%;
+  }
+  
+  @media (max-width: 768px) {
+    #manualEntryForm input, #manualEntryForm select {
+      font-size: 1rem;
+      padding: 15px;
+    }
+  
+    #manualEntryForm button {
+      font-size: 1.1rem;
+    }
+  }
+  
+  #customDate {
+    display: none;
+  }
+  
+  /* Settings Tab */
+  #settings {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  #sessionSelect, #newSessionBtn, #clearLogsBtn {
+    margin-top: 20px;
+  }
+  
+  #deleteSessionBtn {
+    margin-top: 20px;
+    background-color: red;
+  }
+  
+  @media (max-width: 768px) {
+    #sessionSelect, #newSessionBtn, #clearLogsBtn {
+      width: 100%;
+    }
+  
+    #deleteSessionBtn {
+      width: 100%;
+    }
+  }
+  
