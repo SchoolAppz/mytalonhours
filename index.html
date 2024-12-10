@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hour Tracker</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <h1>Hour Tracker</h1>
+
+  <!-- Navigation Tabs -->
+  <div class="tabs">
+    <button class="tab active" id="stopwatch-tab">Stopwatch</button>
+    <button class="tab" id="log-tab">Log</button>
+    <button class="tab" id="manual-entry-tab">Manual Entry</button>
+    <button class="tab" id="settings-tab">Settings</button>
+  </div>
+
+  <!-- Stopwatch Tab -->
+  <div id="stopwatch" class="tab-content">
+    <h3 style="text-align: center;">Stopwatch</h3>
+    <p id="time">00:00:00</p>
+    <button id="startStopBtn">Start</button>
+    <button id="logHoursBtn" disabled>Log Hours</button> <!-- Added Log Hours Button -->
+    <div class="checkbox-group">
+      <div>
+        <input type="radio" id="build" name="category" disabled> Build
+      </div>
+      <div>
+        <input type="radio" id="business" name="category" disabled> Business
+      </div>
+    </div>
+  </div>
+
+  <!-- Log Tab -->
+  <div id="log" class="tab-content">
+    <h3 style="text-align: center;">Log</h3>
+    <table id="logTable">
+      <thead>
+        <tr>
+          <th>Start Time</th>
+          <th>End Time</th>
+          <th>Duration</th>
+          <th>Category</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <p id="totalHours">
+      Total Hours - Build: <span id="totalBuild">0</span> | Business: <span id="totalBusiness">0</span> | Total: <span id="totalTotal">0</span>
+    </p>
+  </div>
+
+  <!-- Manual Entry Tab -->
+  <div id="manual-entry" class="tab-content">
+    <h3 style="text-align: center;">Manual Entry</h3>
+    <form id="manualEntryForm">
+      <label for="hours">Hours:</label>
+      <input type="number" id="hours" name="hours" min="1" required placeholder="Enter hours worked">
+
+      <label for="entryDate">Select Date:</label>
+      <select id="entryDate" name="entryDate">
+        <option value="current">Use Current Date</option>
+        <option value="custom">Enter Custom Date</option>
+      </select>
+
+      <!-- Custom Date Input -->
+      <input type="date" id="customDate" name="customDate" style="display: none;">
+
+      <div class="checkbox-group">
+        <div>
+          <input type="radio" id="manualBuild" name="manualCategory"> Build
+        </div>
+        <div>
+          <input type="radio" id="manualBusiness" name="manualCategory"> Business
+        </div>
+      </div>
+
+      <button type="submit">Log Hours</button>
+    </form>
+  </div>
+
+  <!-- Settings Tab -->
+  <div id="settings" class="tab-content">
+    <h3 style="text-align: center;">Settings</h3>
+    <div>
+      <button id="clearLogsBtn">Clear Logs</button>
+    </div>
+    <div>
+      <label for="sessionSelect">Select Session:</label>
+      <select id="sessionSelect">
+        <option value="">-- Select Session --</option>
+      </select>
+      <button id="newSessionBtn">New Session</button>
+      <button id="deleteSessionBtn" style="display:none;">Delete Session</button> <!-- Delete Session Button -->
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
