@@ -4,29 +4,16 @@ let isRunning = false; // Indicates whether the stopwatch is running
 
 // On page load, initialize the session and handle session dropdown
 document.addEventListener('DOMContentLoaded', function () {
-  let currentSession = localStorage.getItem('currentSession');
-  if (!currentSession) {
-    currentSession = 'default'; // Default session if no session is selected
-  }
-
-  // Update the session dropdown with available sessions
+  // Make sure that the "2024 season" is always available in the session select dropdown
   updateSessionDropdown();
 
-  // If there's a valid session selected, load its time and update the UI
-  if (currentSession !== 'default') {
-    document.getElementById('sessionSelect').value = currentSession;
-    loadStopwatchTime(currentSession);
+  // Set "2024 season" as the default session in localStorage if no session is selected
+  if (!localStorage.getItem('currentSession')) {
+    localStorage.setItem('currentSession', '2024 season');
   }
 
-  // Handle create new session button
-  document.getElementById('createSessionBtn').addEventListener('click', function () {
-    const sessionName = document.getElementById('newSessionName').value.trim();
-    if (sessionName) {
-      createNewSession(sessionName);
-    } else {
-      alert('Please enter a valid session name.');
-    }
-  });
+  // If the "2024 season" session is selected, load its time and update the UI
+  loadStopwatchTime('2024 season');
 
   // Handle select session button
   document.getElementById('selectSessionBtn').addEventListener('click', function () {
@@ -41,46 +28,16 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
-// Update the session dropdown with available sessions
+// Update the session dropdown with the available session (only "2024 season")
 function updateSessionDropdown() {
   const sessionSelect = document.getElementById('sessionSelect');
   sessionSelect.innerHTML = '<option value="">-- Select Session --</option>';
 
-  // Get saved sessions from localStorage or initialize them as an empty array
-  const savedSessions = JSON.parse(localStorage.getItem('sessions')) || [];
-
-  // Add each saved session to the dropdown
-  savedSessions.forEach(session => {
-    const option = document.createElement('option');
-    option.value = session;
-    option.textContent = session;
-    sessionSelect.appendChild(option);
-  });
-}
-
-// Create a new session and add it to the session list
-function createNewSession(sessionName) {
-  const savedSessions = JSON.parse(localStorage.getItem('sessions')) || [];
-
-  // Check if the session already exists
-  if (savedSessions.includes(sessionName)) {
-    alert('Session already exists!');
-    return;
-  }
-
-  // Add the new session to the list of saved sessions
-  savedSessions.push(sessionName);
-  localStorage.setItem('sessions', JSON.stringify(savedSessions));
-
-  // Set the new session as the current session
-  localStorage.setItem('currentSession', sessionName);
-
-  // Update the session dropdown and select the new session
-  updateSessionDropdown();
-  document.getElementById('sessionSelect').value = sessionName;
-
-  // Redirect to the stopwatch page for the new session
-  window.location.href = 'stopwatch.html';
+  // Hardcode the session as "2024 season"
+  const option = document.createElement('option');
+  option.value = '2024 season';
+  option.textContent = '2024 season';
+  sessionSelect.appendChild(option);
 }
 
 // Load the stopwatch time for the selected session
@@ -118,7 +75,7 @@ function startStopwatch() {
   timerInterval = setInterval(function () {
     totalSeconds++;
     updateTimeDisplay();
-    localStorage.setItem(`${currentSession}-time`, totalSeconds);
+    localStorage.setItem('2024 season-time', totalSeconds); // Save time for the "2024 season"
   }, 1000);
   isRunning = true;
   document.getElementById('startStopBtn').textContent = 'Stop';
@@ -145,9 +102,9 @@ function logHours() {
     category: category.id === 'build' ? 'Build' : 'Business'
   };
 
-  let sessionLogs = JSON.parse(localStorage.getItem(`${currentSession}-logs`)) || [];
+  let sessionLogs = JSON.parse(localStorage.getItem('2024 season-logs')) || [];
   sessionLogs.push(log);
-  localStorage.setItem(`${currentSession}-logs`, JSON.stringify(sessionLogs));
+  localStorage.setItem('2024 season-logs', JSON.stringify(sessionLogs));
 
   updateLogTable(sessionLogs);
   updateTotals(sessionLogs);
@@ -197,9 +154,10 @@ function updateTotals(logs) {
 function resetStopwatch() {
   totalSeconds = 0;
   updateTimeDisplay();
-  localStorage.setItem(`${currentSession}-time`, totalSeconds);
+  localStorage.setItem('2024 season-time', totalSeconds); // Reset time for the session
   document.getElementById('startStopBtn').textContent = 'Start';
   document.getElementById('logHoursBtn').disabled = true;
   document.querySelector('input[name="category"]:checked')?.checked = false;
 }
+
 
