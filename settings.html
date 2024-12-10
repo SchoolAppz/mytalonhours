@@ -12,21 +12,20 @@
     <h1>Settings</h1>
 
     <div>
-      <button id="clearLogsBtn">Clear Logs</button>
+      <label for="buttonColorPicker">Select Button Color:</label>
+      <input type="color" id="buttonColorPicker" value="#ff69b4"> <!-- Default to pink -->
     </div>
 
     <div>
-      <label for="sessionSelect">Select Session:</label>
-      <select id="sessionSelect">
-        <option value="">-- Select Session --</option>
-      </select>
-      <button id="newSessionBtn">New Session</button>
-      <button id="deleteSessionBtn" style="display:none;">Delete Session</button>
+      <button id="saveColorBtn">Save Color</button>
     </div>
 
-    <a href="index.html" class="back-btn">Back to Session</a>
+    <div>
+      <button onclick="window.location.href='index.html'">Back to Home</button>
+    </div>
   </div>
 
   <script src="script.js"></script>
 </body>
 </html>
+
