@@ -10,25 +10,21 @@
 
   <div class="container">
     <h1>Welcome to the Hour Tracker</h1>
-    <p>Select or create a session to begin tracking your hours.</p>
+    <p>Select or create a new session</p>
 
-    <!-- Select Session Dropdown -->
-    <div class="session-selection">
-      <label for="sessionSelect">Select Session:</label>
-      <select id="sessionSelect">
-        <option value="">-- Select a Session --</option>
-      </select>
-      <button id="selectSessionBtn">Select Session</button>
-    </div>
-
-    <!-- Create New Session -->
-    <div class="new-session">
-      <label for="newSessionName">Create New Session:</label>
-      <input type="text" id="newSessionName" placeholder="Enter session name" />
+    <div>
+      <label for="newSessionName">Enter Session Name:</label>
+      <input type="text" id="newSessionName" placeholder="New session name">
       <button id="createSessionBtn">Create New Session</button>
     </div>
 
-    <p>Once a session is selected or created, click "Select Session" to continue.</p>
+    <div>
+      <label for="sessionSelect">Select Session:</label>
+      <select id="sessionSelect">
+        <option value="">-- Select Session --</option>
+      </select>
+      <button id="selectSessionBtn">Select Session</button>
+    </div>
   </div>
 
   <script src="script.js"></script>
