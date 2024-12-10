@@ -4,7 +4,6 @@ let isRunning = false; // Indicates whether the stopwatch is running
 
 // On page load, initialize the session and handle session dropdown
 document.addEventListener('DOMContentLoaded', function () {
-  // Check if a session is currently selected in localStorage
   let currentSession = localStorage.getItem('currentSession');
   if (!currentSession) {
     currentSession = 'default'; // Default session if no session is selected
@@ -75,6 +74,10 @@ function createNewSession(sessionName) {
 
   // Set the new session as the current session
   localStorage.setItem('currentSession', sessionName);
+
+  // Update the session dropdown and select the new session
+  updateSessionDropdown();
+  document.getElementById('sessionSelect').value = sessionName;
 
   // Redirect to the stopwatch page for the new session
   window.location.href = 'stopwatch.html';
